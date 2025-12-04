@@ -755,3 +755,59 @@ function escapeHtml(str) {
     .replace(/\"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+// === PPS 40-sekunders webbanimation ===
+
+function runPPSAnimation() {
+  const titleEl = document.getElementById("ppsAnimTitle");
+  const textEl = document.getElementById("ppsAnimText");
+  const progressEl = document.getElementById("ppsAnimProgress");
+
+  if (!titleEl || !textEl || !progressEl) return;
+
+  const timeline = [
+    { t: "PPS – på 40 sekunder", d: "Vad är PPS och hur funkar det egentligen?" },
+    { t: "Scen 1 · Förbereda", d: "Ett behov uppstår → vi beskriver varför projektet behövs." },
+    { t: "DP1", d: "Styrgruppen beslutar: Är detta värt att utreda?" },
+    { t: "Scen 2 · Starta", d: "Mål, omfattning, roller, risker och plan tas fram." },
+    { t: "DP2", d: "Styrgruppen beslutar: Är vi redo att starta projektet?" },
+    { t: "Scen 3 · Genomföra", d: "Leveranser tas fram enligt plan, status följs upp." },
+    { t: "DP3", d: "Fortsätta? Omplanera? Stoppa?" },
+    { t: "Scen 4 · Avsluta", d: "Leveranser godkänns och projektet avslutas." },
+    { t: "DP4", d: "Styrgruppen: Är vi klara?" },
+    { t: "Scen 5 · Effektuera", d: "Har nyttan uppnåtts? Följs upp i verksamheten." },
+    { t: "DP5", d: "Slutligt beslut om effekthemtagning." },
+    { t: "Klart!", d: "Nu har du fått PPS-resan på 40 sekunder." }
+  ];
+
+  let i = 0;
+  const stepDuration = 3500; // 3.5 sek per steg ≈ 40 sek totalt
+
+  function showStep() {
+    const step = timeline[i];
+    titleEl.textContent = step.t;
+    textEl.textContent = step.d;
+
+    const progress = ((i + 1) / timeline.length) * 100;
+    progressEl.style.width = progress + "%";
+
+    i++;
+    if (i < timeline.length) {
+      setTimeout(showStep, stepDuration);
+    }
+  }
+
+  // starta
+  progressEl.style.width = "0%";
+  setTimeout(showStep, 700);
+}
+
+// Starta automatiskt när PPS-vyn öppnas
+document.addEventListener("DOMContentLoaded", () => {
+  const ppsBtn = document.querySelector('[data-view="view-pps"]');
+  if (ppsBtn) {
+    ppsBtn.addEventListener("click", () => {
+      // Starta om animationen varje gång fliken öppnas
+      setTimeout(runPPSAnimation, 300);
+    });
+  }
+});
