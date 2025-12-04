@@ -20,7 +20,8 @@
       </div>
     </div>
     <nav class="main-nav">
-      <button class="nav-btn active" data-view="view-time">Tidregistrering</button>
+      <button class="nav-btn active" data-view="view-overview">Översikt</button>
+      <button class="nav-btn" data-view="view-time">Tidregistrering</button>
       <button class="nav-btn" data-view="view-admin">Projekt & medarbetare</button>
       <button class="nav-btn" data-view="view-dashboard">Dashboard</button>
       <button class="nav-btn" data-view="view-pps">PPS</button>
@@ -28,8 +29,91 @@
   </header>
 
   <main class="app-main">
+    <!-- Översikt -->
+    <section id="view-overview" class="view active">
+      <div class="view-header">
+        <h2>Översikt</h2>
+        <p>Snabb vy över projekt, medarbetare, timmar och kostnader.</p>
+      </div>
+
+      <section class="grid-3 overview-section">
+        <div class="card kpi-card">
+          <h3>Antal projekt</h3>
+          <p class="kpi-value" id="ov-kpi-projects">0</p>
+          <p class="kpi-sub">Aktiva projekt i systemet</p>
+        </div>
+        <div class="card kpi-card">
+          <h3>Antal medarbetare</h3>
+          <p class="kpi-value" id="ov-kpi-people">0</p>
+          <p class="kpi-sub">Medverkande i projekten</p>
+        </div>
+        <div class="card kpi-card">
+          <h3>Rapporterade timmar</h3>
+          <p class="kpi-value" id="ov-kpi-hours">0</p>
+          <p class="kpi-sub">Totalt registrerade timmar</p>
+        </div>
+      </section>
+
+      <section class="grid-2 overview-section">
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <h3>Snabbvy per projekt</h3>
+              <p>Hur många timmar och ungefärlig kostnad per projekt.</p>
+            </div>
+          </header>
+          <div class="table-wrapper">
+            <table class="data-table" id="ov-table-projects">
+              <thead>
+                <tr>
+                  <th>Projekt</th>
+                  <th>Timmar</th>
+                  <th>Kostnad (SEK)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <h3>Snabbvy per medarbetare</h3>
+              <p>Hur mycket varje person har rapporterat totalt.</p>
+            </div>
+          </header>
+          <div class="table-wrapper">
+            <table class="data-table" id="ov-table-people">
+              <thead>
+                <tr>
+                  <th>Medarbetare</th>
+                  <th>Timmar</th>
+                  <th>Kostnad (SEK)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="card overview-section">
+        <header class="card-header">
+          <div>
+            <h3>Sammanfattning</h3>
+            <p>En enkel ögonblicksbild du kan använda i dialog med chef eller styrgrupp.</p>
+          </div>
+        </header>
+        <p class="overview-summary-text">
+          Översikten visar hur resurserna fördelas mellan projekt och medarbetare. Den kan fungera som
+          underlag för beslut kring prioriteringar, belastning och vilka projekt som driver mest kostnad.
+        </p>
+      </section>
+    </section>
+
     <!-- Tidregistrering -->
-    <section id="view-time" class="view active">
+    <section id="view-time" class="view">
       <div class="view-header">
         <h2>Tidregistrering</h2>
         <p>Registrera tid per projekt och medarbetare. Anpassad för mobil och dator.</p>
@@ -332,10 +416,10 @@
         <p>En visuell genomgång av PPS-modellen, dess faser och beslutspunkter.</p>
       </div>
 
-      <section class="card pps-intro">
+      <section class="card pps-intro pps-section">
         <h3>Vad är PPS?</h3>
         <p>
-          PPS (Praktisk ProjektStyrning) är en projektmodell utvecklad av Tietoevry. Modellen används brett i offentlig sektor,
+          PPS (Praktisk ProjektStyrning) är en projektmodell utvecklad av Tietoevry. Modellen används brett i offentlig sektor
           och fokuserar på tydliga beslutspunkter, roller, mål och uppföljning.
         </p>
         <p>
@@ -344,7 +428,7 @@
         </p>
       </section>
 
-      <section class="card">
+      <section class="card pps-section">
         <header class="card-header">
           <div>
             <h3>Projektets resa enligt PPS</h3>
@@ -385,7 +469,7 @@
         </div>
       </section>
 
-      <section class="card">
+      <section class="card pps-section">
         <header class="card-header">
           <div>
             <h3>Decision Points (DP1–DP5)</h3>
@@ -476,7 +560,7 @@
         </div>
       </section>
 
-      <section class="card">
+      <section class="card pps-section">
         <header class="card-header">
           <div>
             <h3>Checklista för projektstart enligt PPS (DP2)</h3>

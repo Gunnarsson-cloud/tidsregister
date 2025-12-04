@@ -584,6 +584,47 @@ textarea {
   }
 }
 
+/* Översikt */
+
+.overview-summary-text {
+  font-size: 0.9rem;
+  color: var(--hbg-muted);
+}
+
+/* Animationer – Översikt & PPS & KPI-counter */
+
+.overview-section {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.overview-animate {
+  animation: fadeUpOverview 0.45s ease-out forwards;
+}
+
+.pps-section {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.pps-animate {
+  animation: fadeUpPPS 0.55s ease-out forwards;
+}
+
+@keyframes fadeUpOverview {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUpPPS {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Footer */
 
 .app-footer {
