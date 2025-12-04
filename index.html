@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projekt & Tid – Stadsbyggnad</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-inner">
+      <div class="brand">
+        <div class="brand-logo">HBG</div>
+        <div class="brand-text">
+          <div class="brand-title">Projekt &amp; tid</div>
+          <div class="brand-subtitle">Stadsbyggnadsförvaltningen – demo</div>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-btn active" data-view="overview">Översikt</button>
+        <button class="nav-btn" data-view="projects">Projekt</button>
+        <button class="nav-btn" data-view="people">Medarbetare</button>
+        <button class="nav-btn" data-view="time">Tidregistrering</button>
+        <button class="nav-btn" data-view="dashboard">Dashboard</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- Översikt -->
+    <section class="view view-active" id="view-overview">
+      <div class="page-header">
+        <h1>Översikt</h1>
+        <p class="page-intro">
+          En enkel demo-applikation för att följa upp vem som jobbar i vilket projekt, 
+          hur mycket tid som läggs och ge chefen snabb överblick.
+          All data lagras i din webbläsare (local storage) – perfekt för prototyp och presentation.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card kpi-card">
+          <div class="kpi-label">Totalt antal projekt</div>
+          <div class="kpi-value" id="kpi-total-projects">–</div>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-label">Antal medarbetare</div>
+          <div class="kpi-value" id="kpi-total-people">–</div>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-label">Rapporterade timmar</div>
+          <div class="kpi-value" id="kpi-total-hours">–</div>
+        </div>
+      </div>
+
+      <div class="layout-split">
+        <div class="card">
+          <h2>Snabb vy per projekt</h2>
+          <p class="card-subtitle">Summerade timmar per projekt. Klicka på fliken Dashboard för fler detaljer.</p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Projekt</th>
+                  <th>ProjektID</th>
+                  <th>Timmar</th>
+                </tr>
+              </thead>
+              <tbody id="overview-project-table">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Snabb vy per medarbetare</h2>
+          <p class="card-subtitle">Summerade timmar per person.</p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Medarbetare</th>
+                  <th>Roll</th>
+                  <th>Timmar</th>
+                </tr>
+              </thead>
+              <tbody id="overview-people-table">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Export &amp; integration</h2>
+        <p>
+          Den här demon är gjord för att lätt kunna flyttas över till SharePoint-listor och kopplas till Power BI.
+          Du kan exportera all data som CSV-filer och importera dem i valfri rapportlösning.
+        </p>
+        <div class="button-row">
+          <button class="btn secondary" id="btn-export-projects">Exportera projekt (CSV)</button>
+          <button class="btn secondary" id="btn-export-people">Exportera medarbetare (CSV)</button>
+          <button class="btn secondary" id="btn-export-time">Exportera tidregistrering (CSV)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projekt -->
+    <section class="view" id="view-projects">
+      <div class="page-header">
+        <h1>Projekt</h1>
+        <p class="page-intro">
+          Lägg upp och underhåll de projekt som medarbetare kan registrera tid mot.
+        </p>
+      </div>
+
+      <div class="layout-split">
+        <div class="card">
+          <h2>Lägg till / redigera projekt</h2>
+          <form id="project-form" class="form">
+            <input type="hidden" id="project-id" />
+            <div class="form-row">
+              <label for="project-name">Projektnamn</label>
+              <input type="text" id="project-name" required placeholder="Ex. Översiktsplan 2040" />
+            </div>
+            <div class="form-row">
+              <label for="project-code">ProjektID</label>
+              <input type="text" id="project-code" placeholder="Ex. P-001" />
+            </div>
+            <div class="form-row">
+              <label for="project-status">Status</label>
+              <select id="project-status">
+                <option value="Planerat">Planerat</option>
+                <option value="Pågående">Pågående</option>
+                <option value="Avslutat">Avslutat</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="project-type">Typ av projekt</label>
+              <select id="project-type">
+                <option value="">– Välj –</option>
+                <option value="Utredning">Utredning</option>
+                <option value="Investering">Investering</option>
+                <option value="Drift">Drift</option>
+                <option value="Annat">Annat</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="project-desc">Beskrivning</label>
+              <textarea id="project-desc" rows="3" placeholder="Kort beskrivning av projektet"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn primary" id="btn-save-project">Spara projekt</button>
+              <button type="button" class="btn ghost" id="btn-reset-project-form">Rensa formulär</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h2>Projektlista</h2>
+            <input type="search" id="project-search" class="search-input" placeholder="Sök projekt..." />
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Projektnamn</th>
+                  <th>ProjektID</th>
+                  <th>Status</th>
+                  <th>Typ</th>
+                  <th>Timmar</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="project-table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Medarbetare -->
+    <section class="view" id="view-people">
+      <div class="page-header">
+        <h1>Medarbetare</h1>
+        <p class="page-intro">
+          Lägg till de medarbetare som ska kunna registrera tid. 
+          För demo används endast namn och roll – e-post kan enkelt läggas till vid behov.
+        </p>
+      </div>
+
+      <div class="layout-split">
+        <div class="card">
+          <h2>Lägg till / redigera medarbetare</h2>
+          <form id="people-form" class="form">
+            <input type="hidden" id="person-id" />
+            <div class="form-row">
+              <label for="person-name">Namn</label>
+              <input type="text" id="person-name" required placeholder="Ex. Anna Andersson" />
+            </div>
+            <div class="form-row">
+              <label for="person-role">Roll</label>
+              <input type="text" id="person-role" placeholder="Ex. Planarkitekt" />
+            </div>
+            <div class="form-row">
+              <label for="person-active">Aktiv</label>
+              <select id="person-active">
+                <option value="true" selected>Ja</option>
+                <option value="false">Nej</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn primary" id="btn-save-person">Spara medarbetare</button>
+              <button type="button" class="btn ghost" id="btn-reset-person-form">Rensa formulär</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h2>Medarbetarlista</h2>
+            <input type="search" id="people-search" class="search-input" placeholder="Sök medarbetare..." />
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Namn</th>
+                  <th>Roll</th>
+                  <th>Aktiv</th>
+                  <th>Timmar</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="people-table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tidregistrering -->
+    <section class="view" id="view-time">
+      <div class="page-header">
+        <h1>Tidregistrering</h1>
+        <p class="page-intro">
+          Här registrerar medarbetarna sin tid per dag och projekt. 
+          För demo kan du testa med de förifyllda projekten och medarbetarna – eller lägga till egna.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Lägg till tidrad</h2>
+        <form id="time-form" class="form form-horizontal">
+          <input type="hidden" id="time-id" />
+          <div class="form-row">
+            <label for="time-date">Datum</label>
+            <input type="date" id="time-date" required />
+          </div>
+          <div class="form-row">
+            <label for="time-person">Medarbetare</label>
+            <select id="time-person" required>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="time-project">Projekt</label>
+            <select id="time-project" required>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="time-hours">Antal timmar</label>
+            <input type="number" id="time-hours" min="0" max="24" step="0.25" required />
+          </div>
+          <div class="form-row">
+            <label for="time-activity">Aktivitetstyp</label>
+            <select id="time-activity">
+              <option value="">– Välj –</option>
+              <option value="Projektering">Projektering</option>
+              <option value="Möte">Möte</option>
+              <option value="Samråd">Samråd</option>
+              <option value="Administration">Administration</option>
+              <option value="Annat">Annat</option>
+            </select>
+          </div>
+          <div class="form-row full-width">
+            <label for="time-comment">Kommentar</label>
+            <textarea id="time-comment" rows="2" placeholder="Valfri kommentar"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn primary" id="btn-save-time">Spara tidrad</button>
+            <button type="button" class="btn ghost" id="btn-reset-time-form">Rensa formulär</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-header-row">
+          <h2>Registrerade tidrader</h2>
+          <div class="filter-row">
+            <input type="search" id="time-search" class="search-input" placeholder="Filtrera på namn, projekt eller kommentar..." />
+            <select id="time-filter-person" class="filter-select">
+              <option value="">Alla medarbetare</option>
+            </select>
+            <select id="time-filter-project" class="filter-select">
+              <option value="">Alla projekt</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Medarbetare</th>
+                <th>Projekt</th>
+                <th>Timmar</th>
+                <th>Aktivitet</th>
+                <th>Kommentar</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="time-table-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="view" id="view-dashboard">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p class="page-intro">
+          Här får chefen en samlad bild: timmar per projekt, per medarbetare och över tid.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card kpi-card">
+          <div class="kpi-label">Timmar denna vecka</div>
+          <div class="kpi-value" id="kpi-hours-week">–</div>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-label">Timmar denna månad</div>
+          <div class="kpi-value" id="kpi-hours-month">–</div>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-label">Genomsnitt / medarbetare</div>
+          <div class="kpi-value" id="kpi-hours-per-person">–</div>
+        </div>
+      </div>
+
+      <div class="layout-split">
+        <div class="card">
+          <div class="card-header-row">
+            <h2>Timmar per projekt</h2>
+            <select id="dashboard-project-period" class="filter-select">
+              <option value="all">Hela perioden</option>
+              <option value="month">Senaste 30 dagarna</option>
+              <option value="week">Senaste 7 dagarna</option>
+            </select>
+          </div>
+          <canvas id="chart-projects" height="220"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h2>Timmar per medarbetare</h2>
+            <select id="dashboard-people-period" class="filter-select">
+              <option value="all">Hela perioden</option>
+              <option value="month">Senaste 30 dagarna</option>
+              <option value="week">Senaste 7 dagarna</option>
+            </select>
+          </div>
+          <canvas id="chart-people" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Arbetsbelastning per dag</h2>
+        <p class="card-subtitle">
+          En enkel trend över hur många timmar som registrerats per dag. 
+        </p>
+        <canvas id="chart-trend" height="260"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="app-footer-inner">
+      <span>Demo: Projekt &amp; tid – Stadsbyggnad</span>
+      <span class="footer-separator">•</span>
+      <span>Byggd för att kunna flyttas till SharePoint &amp; Power BI</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
