@@ -1,6 +1,6 @@
 /* Helsingborg-inspirerad färgpalett */
 :root {
-  --hbg-red: #7c1f23;      /* Helsingborgstegel-liknande */
+  --hbg-red: #7c1f23;
   --hbg-dark-blue: #003049;
   --hbg-light: #f5f5f7;
   --hbg-mid: #e1e3ea;
@@ -30,13 +30,15 @@ body {
   flex-direction: column;
 }
 
+/* Header & brand */
+
 .app-header {
   background: linear-gradient(135deg, var(--hbg-dark-blue), var(--hbg-red));
   color: #ffffff;
-  padding: 1rem 1.2rem 1rem;
+  padding: 0.7rem 1.2rem 0.9rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.7rem;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
   position: sticky;
   top: 0;
@@ -52,39 +54,27 @@ body {
 .brand-mark {
   width: 40px;
   height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #ffffff, #f9fafb);
+  border-radius: 14px;
+  background: #ffffff;
   position: relative;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.brand-mark::before,
-.brand-mark::after {
-  content: "";
-  position: absolute;
-  background: var(--hbg-red);
-  border-radius: 999px;
-}
-
-.brand-mark::before {
-  width: 16px;
-  height: 16px;
-  left: 6px;
-  top: 6px;
-}
-
-.brand-mark::after {
-  width: 18px;
-  height: 18px;
-  right: 5px;
-  bottom: 5px;
-  border: 2px solid var(--hbg-dark-blue);
+.brand-initials {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--hbg-red);
+  letter-spacing: 0.06em;
 }
 
 .brand-text h1 {
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   margin: 0;
   font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .brand-text p {
@@ -92,6 +82,8 @@ body {
   font-size: 0.85rem;
   opacity: 0.9;
 }
+
+/* Navigation */
 
 .main-nav {
   display: flex;
@@ -131,6 +123,8 @@ body {
   box-shadow: 0 8px 18px rgba(0,0,0,0.25);
 }
 
+/* Main layout */
+
 .app-main {
   max-width: 1200px;
   width: 100%;
@@ -163,7 +157,7 @@ body {
   color: var(--hbg-muted);
 }
 
-/* Kort & layout */
+/* Cards & grid */
 
 .card {
   background: #ffffff;
@@ -283,7 +277,7 @@ textarea {
   color: var(--hbg-muted);
 }
 
-/* Knapp-stilar */
+/* Buttons */
 
 .primary-btn,
 .secondary-btn,
@@ -389,7 +383,7 @@ textarea {
   color: #ffffff;
 }
 
-/* KPI-kort */
+/* KPI */
 
 .kpi-card {
   text-align: left;
@@ -432,6 +426,164 @@ textarea {
   margin: 0.4rem 0 0.6rem;
 }
 
+/* PPS – illustrationer och layout */
+
+.pps-intro p {
+  margin-top: 0.4rem;
+}
+
+.pps-film-strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(180px, 1fr);
+  gap: 0.8rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+}
+
+.pps-film-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.pps-film-strip::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 999px;
+}
+
+.pps-scene {
+  background: #faf5f5;
+  border-radius: var(--radius-md);
+  padding: 0.7rem 0.75rem;
+  min-height: 150px;
+  position: relative;
+  border: 1px solid #f1d5d6;
+}
+
+.pps-scene-badge {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.6rem;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #f1d5d6;
+  color: var(--hbg-red);
+  font-weight: 600;
+}
+
+.pps-scene h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.pps-scene p {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  color: var(--hbg-muted);
+}
+
+.pps-scene-dp {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--hbg-red);
+}
+
+/* PPS timeline */
+
+.pps-timeline {
+  border-left: 2px solid #e5e7eb;
+  margin-left: 0.6rem;
+  padding-left: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.pps-step {
+  position: relative;
+  padding-bottom: 0.4rem;
+}
+
+.pps-step::before {
+  content: "";
+  position: absolute;
+  left: -0.9rem;
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid var(--hbg-red);
+}
+
+.pps-step-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.pps-step-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--hbg-red), #b91c1c);
+  color: #ffffff;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  box-shadow: 0 8px 16px rgba(124,31,35,0.35);
+}
+
+.pps-step-sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: var(--hbg-muted);
+}
+
+.pps-step ul {
+  margin: 0.3rem 0 0.2rem 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.pps-step li {
+  margin-bottom: 0.2rem;
+}
+
+/* Checklista */
+
+.pps-checklist {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+}
+
+.pps-checklist-column h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.pps-checklist-column ul {
+  margin: 0.2rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.pps-checklist-column li {
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 900px) {
+  .pps-checklist {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 /* Footer */
 
 .app-footer {
@@ -448,7 +600,7 @@ textarea {
     padding: 0.9rem 0.8rem;
   }
   .brand-text h1 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }
 

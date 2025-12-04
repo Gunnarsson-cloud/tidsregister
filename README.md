@@ -1,57 +1,50 @@
-# Projekt & tid – Helsingborg demoapp
+# Projekt & tid – demoapp med PPS-sida
 
-Detta är en fristående webbapp (ren HTML/JS/CSS) som kan köras direkt från GitHub Pages eller lokalt.  
-Syftet är att visa en komplett lösning för:
+Detta är en fristående webbapp (HTML/JS/CSS) som kan köras t.ex. via **GitHub Pages**.
 
-- Projektregister
-- Medarbetarregister
-- Tidregistrering per medarbetare och projekt
-- Inbyggd dashboard med grafer (utan Power BI)
-- Export av data till CSV (för vidare analys i t.ex. Excel eller Power BI)
+Funktioner:
 
-All data lagras i browserns **localStorage** – ingen backend eller inloggning krävs.  
-Lösningen är tänkt som demo/prototyp och som underlag för att senare:
+- Tidregistrering per projekt och medarbetare
+- Hantering av projekt (inkl. timpris) och medarbetare
+- Dashboard med timmar och kostnad, diagram och tabeller
+- Ny **PPS-sida** som pedagogiskt beskriver Tietoevry PPS (Praktisk ProjektStyrning):
+  - Kortfilm-lik “scen-för-scen”-presentation av projektresan
+  - Tydlig illustration av Decision Points (DP1–DP5) i tidslinje
+  - Checklista för vad som krävs för projektstart (DP2)
 
-- Portas till SharePoint-listor
-- Användas som datakälla i Power BI
+All data lagras lokalt i webbläsarens `localStorage`, ingen server behövs.
 
-## Funktioner
+## Struktur
 
-- Lägg till / redigera / ta bort **projekt**
-- Lägg till / redigera / ta bort **medarbetare**
-- Registrera **tidrader** (datum, medarbetare, projekt, timmar, aktivitetstyp, kommentar)
-- Filtrera och sök i tidrader (per person, per projekt, fritext)
-- Dashboard:
-  - Timmar per projekt
-  - Timmar per medarbetare
-  - Timmar per dag (trend)
-  - KPI: timmar denna vecka, denna månad, snitt per medarbetare
-- Exportera alla tre tabeller som CSV:
-  - `projekt.csv`
-  - `medarbetare.csv`
-  - `tidregistrering.csv`
+- `index.html` – hela SPA-appen med fyra flikar:
+  - Tidregistrering
+  - Projekt & medarbetare
+  - Dashboard
+  - PPS
+- `styles.css` – all styling, inkl. Helsingborg-inspirerat tema och PPS-illustrationer
+- `app.js` – logik, state-hantering, rendering och dashboard-beräkningar
 
-## Så kör du appen
+## Så använder du detta i GitHub
 
-### Lokalt
+1. Skapa eller använd ett befintligt repo.
+2. Lägg in:
+   - `index.html`
+   - `styles.css`
+   - `app.js`
+3. Aktivera GitHub Pages (Source: t.ex. `main` / `/root`).
+4. Öppna sidan via den GitHub Pages-URL som genereras.
 
-1. Ladda ner zip-filen eller klona repot.
-2. Öppna `index.html` i valfri webbläsare.
-   - Ingen byggprocess, ingen backend – bara statiska filer.
+## Anpassning till SharePoint / M365 (senare steg)
 
-### På GitHub Pages
+I en riktig implementation kan:
 
-1. Skapa ett nytt repo på GitHub, t.ex. `hbg-projekt-tid-demo`.
-2. Lägg in filerna i repot.
-3. Aktivera **GitHub Pages** i repo-inställningarna (branch: `main`, folder: `/root`).
-4. Öppna den URL som GitHub ger – klart.
+- `state.projects`, `state.people` och `state.entries` ersättas av SharePoint-listor.
+- PPS-sidan ligga som:
+  - en egen flik i en SharePoint-sida
+  - eller en egen sektion i intranätet
+- Dashboarden ersättas eller kompletteras med Power BI-rapporter.
 
-## Arkitektur / datamodell
+Den här versionen är tänkt som:
 
-Se `docs/powerbi-layout.md` för en mer detaljerad beskrivning av:
-
-- Tabeller / listor
-- Fält
-- Hur detta mappas mot SharePoint-listor
-- Förslag på Power BI-rapport.
-
+- ett **konkret demo-underlag** för chef/ledning
+- ett visuellt exempel på hur projekt- och tidsuppföljning + PPS-styrning kan hänga ihop i en och samma lösning.

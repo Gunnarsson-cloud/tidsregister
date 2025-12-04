@@ -40,7 +40,7 @@ function initDemoData() {
   const p1 = createId();
   const p2 = createId();
   const p3 = createId();
-  const now = new Date();
+  const today = new Date();
 
   state.projects = [
     { id: p1, name: 'Översiktsplan 2040', code: 'P-001', hourlyRate: 950, status: 'active' },
@@ -58,7 +58,6 @@ function initDemoData() {
     { id: c, name: 'Erik Nilsson', role: 'Trafikplanerare', hourlyRate: 850, active: true }
   ];
 
-  const today = new Date();
   const d1 = new Date(today);
   d1.setDate(d1.getDate() - 2);
   const d2 = new Date(today);
@@ -139,7 +138,6 @@ function setupNav() {
 }
 
 function setupForms() {
-  // Tidform defaultdatum idag
   const dateInput = $('#time-date');
   if (dateInput) {
     const today = new Date().toISOString().slice(0, 10);
@@ -449,7 +447,6 @@ function renderDashboard() {
   $('#kpi-entries').textContent = kpiEntries.toLocaleString('sv-SE');
   $('#kpi-cost').textContent = kpiCost.toLocaleString('sv-SE', { maximumFractionDigits: 0 }) + ' kr';
 
-  // Aggregat per projekt
   const byProject = {};
   filtered.forEach(e => {
     if (!byProject[e.projectId]) {
@@ -471,7 +468,6 @@ function renderDashboard() {
     projCosts.push(data.cost);
   });
 
-  // Aggregat per medarbetare
   const byPerson = {};
   filtered.forEach(e => {
     if (!byPerson[e.personId]) {

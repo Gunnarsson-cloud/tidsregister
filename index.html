@@ -2,9 +2,9 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8" />
-  <title>Projekt & Tid – Stadsbyggnad</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projekt & Tid - Stadsbyggnadsförvaltningen</title>
+  <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -12,275 +12,51 @@
 </head>
 <body>
   <header class="app-header">
-    <div class="app-header-inner">
-      <div class="brand">
-        <div class="brand-logo">HBG</div>
-        <div class="brand-text">
-          <div class="brand-title">Projekt &amp; tid</div>
-          <div class="brand-subtitle">Stadsbyggnadsförvaltningen – demo</div>
-        </div>
+    <div class="brand">
+      <div class="brand-mark"><span class="brand-initials">HBG</span></div>
+      <div class="brand-text">
+        <h1>PROJEKT & TID</h1>
+        <p>Stadsbyggnadsförvaltningen – demo</p>
       </div>
-      <nav class="main-nav">
-        <button class="nav-btn active" data-view="overview">Översikt</button>
-        <button class="nav-btn" data-view="projects">Projekt</button>
-        <button class="nav-btn" data-view="people">Medarbetare</button>
-        <button class="nav-btn" data-view="time">Tidregistrering</button>
-        <button class="nav-btn" data-view="dashboard">Dashboard</button>
-      </nav>
     </div>
+    <nav class="main-nav">
+      <button class="nav-btn active" data-view="view-time">Tidregistrering</button>
+      <button class="nav-btn" data-view="view-admin">Projekt & medarbetare</button>
+      <button class="nav-btn" data-view="view-dashboard">Dashboard</button>
+      <button class="nav-btn" data-view="view-pps">PPS</button>
+    </nav>
   </header>
 
   <main class="app-main">
-    <!-- Översikt -->
-    <section class="view view-active" id="view-overview">
-      <div class="page-header">
-        <h1>Översikt</h1>
-        <p class="page-intro">
-          En enkel demo-applikation för att följa upp vem som jobbar i vilket projekt, 
-          hur mycket tid som läggs och ge chefen snabb överblick.
-          All data lagras i din webbläsare (local storage) – perfekt för prototyp och presentation.
-        </p>
-      </div>
-
-      <div class="grid grid-3">
-        <div class="card kpi-card">
-          <div class="kpi-label">Totalt antal projekt</div>
-          <div class="kpi-value" id="kpi-total-projects">–</div>
-        </div>
-        <div class="card kpi-card">
-          <div class="kpi-label">Antal medarbetare</div>
-          <div class="kpi-value" id="kpi-total-people">–</div>
-        </div>
-        <div class="card kpi-card">
-          <div class="kpi-label">Rapporterade timmar</div>
-          <div class="kpi-value" id="kpi-total-hours">–</div>
-        </div>
-      </div>
-
-      <div class="layout-split">
-        <div class="card">
-          <h2>Snabb vy per projekt</h2>
-          <p class="card-subtitle">Summerade timmar per projekt. Klicka på fliken Dashboard för fler detaljer.</p>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Projekt</th>
-                  <th>ProjektID</th>
-                  <th>Timmar</th>
-                </tr>
-              </thead>
-              <tbody id="overview-project-table">
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <h2>Snabb vy per medarbetare</h2>
-          <p class="card-subtitle">Summerade timmar per person.</p>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Medarbetare</th>
-                  <th>Roll</th>
-                  <th>Timmar</th>
-                </tr>
-              </thead>
-              <tbody id="overview-people-table">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Export &amp; integration</h2>
-        <p>
-          Den här demon är gjord för att lätt kunna flyttas över till SharePoint-listor och kopplas till Power BI.
-          Du kan exportera all data som CSV-filer och importera dem i valfri rapportlösning.
-        </p>
-        <div class="button-row">
-          <button class="btn secondary" id="btn-export-projects">Exportera projekt (CSV)</button>
-          <button class="btn secondary" id="btn-export-people">Exportera medarbetare (CSV)</button>
-          <button class="btn secondary" id="btn-export-time">Exportera tidregistrering (CSV)</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projekt -->
-    <section class="view" id="view-projects">
-      <div class="page-header">
-        <h1>Projekt</h1>
-        <p class="page-intro">
-          Lägg upp och underhåll de projekt som medarbetare kan registrera tid mot.
-        </p>
-      </div>
-
-      <div class="layout-split">
-        <div class="card">
-          <h2>Lägg till / redigera projekt</h2>
-          <form id="project-form" class="form">
-            <input type="hidden" id="project-id" />
-            <div class="form-row">
-              <label for="project-name">Projektnamn</label>
-              <input type="text" id="project-name" required placeholder="Ex. Översiktsplan 2040" />
-            </div>
-            <div class="form-row">
-              <label for="project-code">ProjektID</label>
-              <input type="text" id="project-code" placeholder="Ex. P-001" />
-            </div>
-            <div class="form-row">
-              <label for="project-status">Status</label>
-              <select id="project-status">
-                <option value="Planerat">Planerat</option>
-                <option value="Pågående">Pågående</option>
-                <option value="Avslutat">Avslutat</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label for="project-type">Typ av projekt</label>
-              <select id="project-type">
-                <option value="">– Välj –</option>
-                <option value="Utredning">Utredning</option>
-                <option value="Investering">Investering</option>
-                <option value="Drift">Drift</option>
-                <option value="Annat">Annat</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label for="project-desc">Beskrivning</label>
-              <textarea id="project-desc" rows="3" placeholder="Kort beskrivning av projektet"></textarea>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn primary" id="btn-save-project">Spara projekt</button>
-              <button type="button" class="btn ghost" id="btn-reset-project-form">Rensa formulär</button>
-            </div>
-          </form>
-        </div>
-
-        <div class="card">
-          <div class="card-header-row">
-            <h2>Projektlista</h2>
-            <input type="search" id="project-search" class="search-input" placeholder="Sök projekt..." />
-          </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Projektnamn</th>
-                  <th>ProjektID</th>
-                  <th>Status</th>
-                  <th>Typ</th>
-                  <th>Timmar</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="project-table-body">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Medarbetare -->
-    <section class="view" id="view-people">
-      <div class="page-header">
-        <h1>Medarbetare</h1>
-        <p class="page-intro">
-          Lägg till de medarbetare som ska kunna registrera tid. 
-          För demo används endast namn och roll – e-post kan enkelt läggas till vid behov.
-        </p>
-      </div>
-
-      <div class="layout-split">
-        <div class="card">
-          <h2>Lägg till / redigera medarbetare</h2>
-          <form id="people-form" class="form">
-            <input type="hidden" id="person-id" />
-            <div class="form-row">
-              <label for="person-name">Namn</label>
-              <input type="text" id="person-name" required placeholder="Ex. Anna Andersson" />
-            </div>
-            <div class="form-row">
-              <label for="person-role">Roll</label>
-              <input type="text" id="person-role" placeholder="Ex. Planarkitekt" />
-            </div>
-            <div class="form-row">
-              <label for="person-active">Aktiv</label>
-              <select id="person-active">
-                <option value="true" selected>Ja</option>
-                <option value="false">Nej</option>
-              </select>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn primary" id="btn-save-person">Spara medarbetare</button>
-              <button type="button" class="btn ghost" id="btn-reset-person-form">Rensa formulär</button>
-            </div>
-          </form>
-        </div>
-
-        <div class="card">
-          <div class="card-header-row">
-            <h2>Medarbetarlista</h2>
-            <input type="search" id="people-search" class="search-input" placeholder="Sök medarbetare..." />
-          </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Namn</th>
-                  <th>Roll</th>
-                  <th>Aktiv</th>
-                  <th>Timmar</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="people-table-body">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Tidregistrering -->
-    <section class="view" id="view-time">
-      <div class="page-header">
-        <h1>Tidregistrering</h1>
-        <p class="page-intro">
-          Här registrerar medarbetarna sin tid per dag och projekt. 
-          För demo kan du testa med de förifyllda projekten och medarbetarna – eller lägga till egna.
-        </p>
+    <section id="view-time" class="view active">
+      <div class="view-header">
+        <h2>Tidregistrering</h2>
+        <p>Registrera tid per projekt och medarbetare. Anpassad för mobil och dator.</p>
       </div>
 
-      <div class="card">
-        <h2>Lägg till tidrad</h2>
-        <form id="time-form" class="form form-horizontal">
-          <input type="hidden" id="time-id" />
-          <div class="form-row">
+      <form id="time-form" class="card form-card">
+        <h3>Lägg till tidrad</h3>
+        <div class="form-grid">
+          <div class="form-field">
             <label for="time-date">Datum</label>
             <input type="date" id="time-date" required />
           </div>
-          <div class="form-row">
+          <div class="form-field">
             <label for="time-person">Medarbetare</label>
-            <select id="time-person" required>
-            </select>
+            <select id="time-person" required></select>
           </div>
-          <div class="form-row">
+          <div class="form-field">
             <label for="time-project">Projekt</label>
-            <select id="time-project" required>
-            </select>
+            <select id="time-project" required></select>
           </div>
-          <div class="form-row">
+          <div class="form-field">
             <label for="time-hours">Antal timmar</label>
-            <input type="number" id="time-hours" min="0" max="24" step="0.25" required />
+            <input type="number" id="time-hours" min="0" step="0.25" required />
           </div>
-          <div class="form-row">
+          <div class="form-field">
             <label for="time-activity">Aktivitetstyp</label>
             <select id="time-activity">
-              <option value="">– Välj –</option>
               <option value="Projektering">Projektering</option>
               <option value="Möte">Möte</option>
               <option value="Samråd">Samråd</option>
@@ -288,32 +64,35 @@
               <option value="Annat">Annat</option>
             </select>
           </div>
-          <div class="form-row full-width">
-            <label for="time-comment">Kommentar</label>
-            <textarea id="time-comment" rows="2" placeholder="Valfri kommentar"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn primary" id="btn-save-time">Spara tidrad</button>
-            <button type="button" class="btn ghost" id="btn-reset-time-form">Rensa formulär</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="card">
-        <div class="card-header-row">
-          <h2>Registrerade tidrader</h2>
-          <div class="filter-row">
-            <input type="search" id="time-search" class="search-input" placeholder="Filtrera på namn, projekt eller kommentar..." />
-            <select id="time-filter-person" class="filter-select">
-              <option value="">Alla medarbetare</option>
-            </select>
-            <select id="time-filter-project" class="filter-select">
-              <option value="">Alla projekt</option>
-            </select>
+          <div class="form-field full">
+            <label for="time-comment">Kommentar (valfri)</label>
+            <textarea id="time-comment" rows="2"></textarea>
           </div>
         </div>
+        <div class="form-actions">
+          <span class="form-message" id="time-message"></span>
+          <button type="submit" class="primary-btn">Spara tidrad</button>
+        </div>
+      </form>
+
+      <section class="card">
+        <header class="card-header">
+          <div>
+            <h3>Senaste tidrader</h3>
+            <p>En översikt över de senaste registreringarna.</p>
+          </div>
+          <div class="table-filter">
+            <label for="recent-limit">Visa</label>
+            <select id="recent-limit">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
+            <span>rader</span>
+          </div>
+        </header>
         <div class="table-wrapper">
-          <table>
+          <table class="data-table" id="recent-entries-table">
             <thead>
               <tr>
                 <th>Datum</th>
@@ -322,85 +101,428 @@
                 <th>Timmar</th>
                 <th>Aktivitet</th>
                 <th>Kommentar</th>
-                <th></th>
               </tr>
             </thead>
-            <tbody id="time-table-body">
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
+      </section>
+    </section>
+
+    <!-- Projekt & medarbetare -->
+    <section id="view-admin" class="view">
+      <div class="view-header">
+        <h2>Projekt & medarbetare</h2>
+        <p>Hantera vilka projekt och personer som kan användas vid tidregistrering.</p>
+      </div>
+
+      <div class="grid-2">
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <h3>Projekt</h3>
+              <p>Lägg till eller uppdatera projekt.</p>
+            </div>
+          </header>
+          <form id="project-form" class="sub-form">
+            <div class="form-grid">
+              <div class="form-field full">
+                <label for="project-name">Projektnamn</label>
+                <input type="text" id="project-name" required />
+              </div>
+              <div class="form-field">
+                <label for="project-code">Projektkod (valfri)</label>
+                <input type="text" id="project-code" />
+              </div>
+              <div class="form-field">
+                <label for="project-rate">Timpris (SEK)</label>
+                <input type="number" id="project-rate" min="0" step="50" placeholder="900" />
+              </div>
+              <div class="form-field">
+                <label for="project-status">Status</label>
+                <select id="project-status">
+                  <option value="active">Aktivt</option>
+                  <option value="inactive">Avslutat</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-actions">
+              <span class="form-message" id="project-message"></span>
+              <button type="submit" class="secondary-btn">Lägg till projekt</button>
+            </div>
+          </form>
+
+          <div class="table-wrapper">
+            <table class="data-table" id="projects-table">
+              <thead>
+                <tr>
+                  <th>Namn</th>
+                  <th>Kod</th>
+                  <th>Status</th>
+                  <th>Timpris</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <h3>Medarbetare</h3>
+              <p>Lägg till eller uppdatera medarbetare.</p>
+            </div>
+          </header>
+          <form id="person-form" class="sub-form">
+            <div class="form-grid">
+              <div class="form-field full">
+                <label for="person-name">Namn</label>
+                <input type="text" id="person-name" required />
+              </div>
+              <div class="form-field full">
+                <label for="person-role">Roll / funktion</label>
+                <input type="text" id="person-role" placeholder="t.ex. Planarkitekt" />
+              </div>
+              <div class="form-field">
+                <label for="person-rate">Timpris (SEK, valfritt)</label>
+                <input type="number" id="person-rate" min="0" step="50" placeholder="Lämna tomt för standard" />
+              </div>
+              <div class="form-field">
+                <label for="person-active">Status</label>
+                <select id="person-active">
+                  <option value="true">Aktiv</option>
+                  <option value="false">Inaktiv</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-actions">
+              <span class="form-message" id="person-message"></span>
+              <button type="submit" class="secondary-btn">Lägg till medarbetare</button>
+            </div>
+          </form>
+
+          <div class="table-wrapper">
+            <table class="data-table" id="people-table">
+              <thead>
+                <tr>
+                  <th>Namn</th>
+                  <th>Roll</th>
+                  <th>Status</th>
+                  <th>Timpris</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
       </div>
     </section>
 
     <!-- Dashboard -->
-    <section class="view" id="view-dashboard">
-      <div class="page-header">
-        <h1>Dashboard</h1>
-        <p class="page-intro">
-          Här får chefen en samlad bild: timmar per projekt, per medarbetare och över tid.
-        </p>
+    <section id="view-dashboard" class="view">
+      <div class="view-header">
+        <h2>Dashboard & rapport</h2>
+        <p>Få en snabb bild av arbetstid och kostnad per projekt och medarbetare.</p>
       </div>
 
-      <div class="grid grid-3">
-        <div class="card kpi-card">
-          <div class="kpi-label">Timmar denna vecka</div>
-          <div class="kpi-value" id="kpi-hours-week">–</div>
-        </div>
-        <div class="card kpi-card">
-          <div class="kpi-label">Timmar denna månad</div>
-          <div class="kpi-value" id="kpi-hours-month">–</div>
-        </div>
-        <div class="card kpi-card">
-          <div class="kpi-label">Genomsnitt / medarbetare</div>
-          <div class="kpi-value" id="kpi-hours-per-person">–</div>
-        </div>
-      </div>
-
-      <div class="layout-split">
-        <div class="card">
-          <div class="card-header-row">
-            <h2>Timmar per projekt</h2>
-            <select id="dashboard-project-period" class="filter-select">
-              <option value="all">Hela perioden</option>
-              <option value="month">Senaste 30 dagarna</option>
-              <option value="week">Senaste 7 dagarna</option>
+      <section class="card filter-card">
+        <h3>Filter</h3>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="filter-from">Från datum</label>
+            <input type="date" id="filter-from">
+          </div>
+          <div class="form-field">
+            <label for="filter-to">Till datum</label>
+            <input type="date" id="filter-to">
+          </div>
+          <div class="form-field">
+            <label for="filter-project">Projekt (valfritt)</label>
+            <select id="filter-project">
+              <option value="">Alla projekt</option>
             </select>
           </div>
-          <canvas id="chart-projects" height="220"></canvas>
-        </div>
-
-        <div class="card">
-          <div class="card-header-row">
-            <h2>Timmar per medarbetare</h2>
-            <select id="dashboard-people-period" class="filter-select">
-              <option value="all">Hela perioden</option>
-              <option value="month">Senaste 30 dagarna</option>
-              <option value="week">Senaste 7 dagarna</option>
+          <div class="form-field">
+            <label for="filter-person">Medarbetare (valfritt)</label>
+            <select id="filter-person">
+              <option value="">Alla medarbetare</option>
             </select>
           </div>
-          <canvas id="chart-people" height="220"></canvas>
         </div>
+        <div class="form-actions">
+          <button id="filter-apply" class="primary-btn">Uppdatera rapport</button>
+          <button id="filter-clear" class="ghost-btn">Rensa filter</button>
+        </div>
+      </section>
+
+      <section class="grid-3">
+        <div class="card kpi-card">
+          <h3>Totala timmar</h3>
+          <p class="kpi-value" id="kpi-hours">0</p>
+          <p class="kpi-sub">Inom vald period</p>
+        </div>
+        <div class="card kpi-card">
+          <h3>Beräknad kostnad</h3>
+          <p class="kpi-value" id="kpi-cost">0 kr</p>
+          <p class="kpi-sub">Baserat på timpris</p>
+        </div>
+        <div class="card kpi-card">
+          <h3>Antal tidrader</h3>
+          <p class="kpi-value" id="kpi-entries">0</p>
+          <p class="kpi-sub">Registrerade rader</p>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <h3>Timmar per projekt</h3>
+              <p>Summan av timmar per projekt inom vald period.</p>
+            </div>
+          </header>
+          <div class="chart-wrapper">
+            <canvas id="chart-projects"></canvas>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table" id="table-projects">
+              <thead>
+                <tr>
+                  <th>Projekt</th>
+                  <th>Timmar</th>
+                  <th>Kostnad (SEK)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <h3>Timmar per medarbetare</h3>
+              <p>Summan av timmar per person inom vald period.</p>
+            </div>
+          </header>
+          <div class="chart-wrapper">
+            <canvas id="chart-people"></canvas>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table" id="table-people">
+              <thead>
+                <tr>
+                  <th>Medarbetare</th>
+                  <th>Timmar</th>
+                  <th>Kostnad (SEK)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <!-- PPS -->
+    <section id="view-pps" class="view">
+      <div class="view-header">
+        <h2>PPS – Praktisk ProjektStyrning</h2>
+        <p>En visuell genomgång av PPS-modellen, dess faser och beslutspunkter.</p>
       </div>
 
-      <div class="card">
-        <h2>Arbetsbelastning per dag</h2>
-        <p class="card-subtitle">
-          En enkel trend över hur många timmar som registrerats per dag. 
+      <section class="card pps-intro">
+        <h3>Vad är PPS?</h3>
+        <p>
+          PPS (Praktisk ProjektStyrning) är en projektmodell utvecklad av Tietoevry. Modellen används brett i offentlig sektor,
+          och fokuserar på tydliga beslutspunkter, roller, mål och uppföljning.
         </p>
-        <canvas id="chart-trend" height="260"></canvas>
-      </div>
+        <p>
+          Här får du en översikt över hur PPS är uppbyggt, vilka beslutspunkter (Decision Points, DP) som finns och
+          vad som krävs för att starta och driva ett projekt på ett kontrollerat sätt.
+        </p>
+      </section>
+
+      <section class="card">
+        <header class="card-header">
+          <div>
+            <h3>Projektets resa enligt PPS</h3>
+            <p>En “kortfilm” i fem scener – från idé till effekthemtagning.</p>
+          </div>
+        </header>
+        <div class="pps-film-strip">
+          <div class="pps-scene">
+            <div class="pps-scene-badge">Scen 1</div>
+            <h4>Förbereda</h4>
+            <p>En idé eller ett behov uppstår. Vi beskriver varför projektet behövs och vad som händer om vi inte gör något.</p>
+            <span class="pps-scene-dp">→ Beslutspunkt: DP1</span>
+          </div>
+          <div class="pps-scene">
+            <div class="pps-scene-badge">Scen 2</div>
+            <h4>Starta</h4>
+            <p>Projektet definieras ordentligt: mål, omfattning, roller, risker, plan och budget tas fram.</p>
+            <span class="pps-scene-dp">→ Beslutspunkt: DP2</span>
+          </div>
+          <div class="pps-scene">
+            <div class="pps-scene-badge">Scen 3</div>
+            <h4>Genomföra</h4>
+            <p>Leveranser tas fram enligt plan. Status följs upp och planen justeras vid behov.</p>
+            <span class="pps-scene-dp">→ Beslutspunkt: DP3</span>
+          </div>
+          <div class="pps-scene">
+            <div class="pps-scene-badge">Scen 4</div>
+            <h4>Avsluta</h4>
+            <p>Leveranser godkänns, dokumentation färdigställs och projektet avslutas formellt.</p>
+            <span class="pps-scene-dp">→ Beslutspunkt: DP4</span>
+          </div>
+          <div class="pps-scene">
+            <div class="pps-scene-badge">Scen 5</div>
+            <h4>Effektuera</h4>
+            <p>Vi följer upp om effekterna faktiskt uppnåtts och hur väl lösningen används.</p>
+            <span class="pps-scene-dp">→ Beslutspunkt: DP5</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <header class="card-header">
+          <div>
+            <h3>Decision Points (DP1–DP5)</h3>
+            <p>Vad styrgruppen beslutar om vid varje beslutspunkt.</p>
+          </div>
+        </header>
+        <div class="pps-timeline">
+          <div class="pps-step">
+            <div class="pps-step-header">
+              <div class="pps-step-icon">DP1</div>
+              <div>
+                <h4>Beslut att initiera förstudie / projektförberedelse</h4>
+                <p class="pps-step-sub">“Är idén värd att utreda?”</p>
+              </div>
+            </div>
+            <ul>
+              <li>Tydlig beskrivning av behov / problem / möjlighet.</li>
+              <li>Grov nytto- och konsekvensbild (vad händer om vi inte gör något?).</li>
+              <li>Förslag på målbild och inriktning.</li>
+              <li>Beslut: genomföra förstudie/projektförberedelse.</li>
+            </ul>
+          </div>
+
+          <div class="pps-step">
+            <div class="pps-step-header">
+              <div class="pps-step-icon">DP2</div>
+              <div>
+                <h4>Beslut att starta projekt</h4>
+                <p class="pps-step-sub">“Har vi ett tillräckligt bra underlag för att starta?”</p>
+              </div>
+            </div>
+            <ul>
+              <li>Projektdefinition framtagen (mål, omfattning, avgränsningar, roller, risker).</li>
+              <li>Plan och budget är framtagna och genomförbara.</li>
+              <li>Projektledare, styrgrupp och nyckelresurser är utsedda.</li>
+              <li>Risker och beroenden är identifierade och hanterade.</li>
+              <li>Beslut: starta projekt.</li>
+            </ul>
+          </div>
+
+          <div class="pps-step">
+            <div class="pps-step-header">
+              <div class="pps-step-icon">DP3</div>
+              <div>
+                <h4>Beslut att fortsätta / omplanera</h4>
+                <p class="pps-step-sub">“Ligger vi rätt – eller behöver vi ändra inriktning?”</p>
+              </div>
+            </div>
+            <ul>
+              <li>Status mot plan: tid, kostnad, kvalitet och omfattning.</li>
+              <li>Uppdaterad risk- och konsekvensbedömning.</li>
+              <li>Förslag till eventuella ändringar i plan, scope eller resursläge.</li>
+              <li>Beslut: fortsätta, omplanera eller avbryta.</li>
+            </ul>
+          </div>
+
+          <div class="pps-step">
+            <div class="pps-step-header">
+              <div class="pps-step-icon">DP4</div>
+              <div>
+                <h4>Beslut att avsluta projektet</h4>
+                <p class="pps-step-sub">“Är projektet levererat och överlämnat?”</p>
+              </div>
+            </div>
+            <ul>
+              <li>Leveranser är godkända av beställare/verksamhet.</li>
+              <li>Slutrapport framtagen (utfall mot plan, lärdomar).</li>
+              <li>Förvaltning/linje tar emot ansvar för lösning/leverans.</li>
+              <li>Beslut: projektet är avslutat.</li>
+            </ul>
+          </div>
+
+          <div class="pps-step">
+            <div class="pps-step-header">
+              <div class="pps-step-icon">DP5</div>
+              <div>
+                <h4>Beslut om effekthemtagning</h4>
+                <p class="pps-step-sub">“Har vi fått den nytta vi tänkte?”</p>
+              </div>
+            </div>
+            <ul>
+              <li>Utvärdering av effektmål och nyttorealisering.</li>
+              <li>Analys av användning, beteendeförändring och resultat.</li>
+              <li>Ev. åtgärder för att förstärka effekterna.</li>
+              <li>Beslut: effekthemtagning godkänd.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <header class="card-header">
+          <div>
+            <h3>Checklista för projektstart enligt PPS (DP2)</h3>
+            <p>Det här ska vara på plats innan ni trycker på “Starta projekt”.</p>
+          </div>
+        </header>
+        <div class="pps-checklist">
+          <div class="pps-checklist-column">
+            <h4>Innehåll i projektdefinition</h4>
+            <ul>
+              <li>Bakgrund och syfte.</li>
+              <li>Effektmål (vilken nytta ska uppnås?).</li>
+              <li>Projektmål (vad ska levereras?).</li>
+              <li>Avgränsningar och prioriteringar.</li>
+              <li>Intressenter och beroenden.</li>
+              <li>Övergripande risker och osäkerheter.</li>
+            </ul>
+          </div>
+          <div class="pps-checklist-column">
+            <h4>Styrning och resurser</h4>
+            <ul>
+              <li>Projektledare utsedd och tillgänglig.</li>
+              <li>Styrgrupp med tydliga roller.</li>
+              <li>Resurser från berörda enheter verifierade.</li>
+              <li>Budget och finansiering klargjord.</li>
+              <li>Grov tidplan och milstolpar satta.</li>
+            </ul>
+          </div>
+          <div class="pps-checklist-column">
+            <h4>Beslut och kommunikation</h4>
+            <ul>
+              <li>Förankring hos beställare och verksamhet.</li>
+              <li>Kommunikationsinriktning klar (vem behöver veta vad, när?).</li>
+              <li>Risker som kräver ledningsbeslut lyfta och hanterade.</li>
+              <li>Styrgruppen har tagit formellt DP2-beslut.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
   <footer class="app-footer">
-    <div class="app-footer-inner">
-      <span>Demo: Projekt &amp; tid – Stadsbyggnad</span>
-      <span class="footer-separator">•</span>
-      <span>Byggd för att kunna flyttas till SharePoint &amp; Power BI</span>
-    </div>
+    <p>Prototype · Projekt & tid · Helsingborgs stad (demo) · Data lagras endast lokalt i din webbläsare.</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
