@@ -651,3 +651,65 @@ textarea {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* === PPS 40-sekunders webbanimation === */
+
+.pps-animation {
+  padding: 1.6rem;
+  margin-bottom: 1.4rem;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.pps-animation-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
+}
+
+.pps-frame {
+  max-width: 600px;
+  text-align: center;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+#ppsAnimTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+#ppsAnimText {
+  font-size: 1rem;
+  color: var(--hbg-muted);
+  min-height: 45px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+.pps-progress {
+  margin-top: 1rem;
+  width: 100%;
+  background: #eee;
+  border-radius: 999px;
+  height: 6px;
+  overflow: hidden;
+}
+
+#ppsAnimProgress {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--hbg-red), var(--hbg-dark-blue));
+  transition: width 0.3s linear;
+  border-radius: 999px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
